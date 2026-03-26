@@ -9,131 +9,47 @@
 <style>
 
   /* chat icon */
-embeddedmessagingconversationbutton,
-  .embeddedMessagingConversationButton {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    visibility: hidden !important;
+@keyframes dh-pulse {
+    0%   { transform: scale(1);    opacity: 0.6; }
+    70%  { transform: scale(1.5);  opacity: 0;   }
+    100% { transform: scale(1.5);  opacity: 0;   }
   }
  
-  /* Our custom floating button */
-  #dh-chat-fab {
+  #dh-fab {
     position: fixed;
     bottom: 28px;
     right: 28px;
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-  }
- 
-  #dh-chat-fab-btn {
+    z-index: 999999;
     width: 62px;
     height: 62px;
     border-radius: 50%;
     background: #c9a84c;
     border: none;
     cursor: pointer;
-    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.18s ease, background 0.18s ease;
-    flex-shrink: 0;
-    outline: none;
   }
  
-  #dh-chat-fab-btn:hover {
+  #dh-fab:hover {
     transform: scale(1.08);
     background: #b8943a;
   }
  
-  #dh-chat-fab-btn:active {
-    transform: scale(0.96);
+  #dh-fab:active {
+    transform: scale(0.95);
   }
  
-  /* Gold pulse ring */
-  #dh-chat-fab-btn::before {
+  #dh-fab::before {
     content: '';
     position: absolute;
-    inset: -2px;
+    inset: 0;
     border-radius: 50%;
     background: #c9a84c;
+    animation: dh-pulse 2.4s ease-out infinite;
     z-index: -1;
-    animation: dh-pulse 2.6s ease-out infinite;
   }
- 
-  @keyframes dh-pulse {
-    0%   { transform: scale(1);    opacity: 0.6; }
-    70%  { transform: scale(1.45); opacity: 0;   }
-    100% { transform: scale(1.45); opacity: 0;   }
-  }
- 
-  /* Tooltip pill */
-  #dh-chat-tooltip {
-    background: #1B2A4A;
-    color: #F5EDD8;
-    font-size: 13px;
-    font-family: 'Gill Sans', 'Optima', Georgia, serif;
-    font-weight: 400;
-    letter-spacing: 0.03em;
-    padding: 9px 16px;
-    border-radius: 24px;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    opacity: 0;
-    transform: translateX(8px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    pointer-events: none;
-    border: 1px solid rgba(201, 168, 76, 0.3);
-  }
- 
-  #dh-chat-tooltip.visible {
-    opacity: 1;
-    transform: translateX(0);
-  }
- 
-  #dh-chat-tooltip::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #c9a84c;
-    flex-shrink: 0;
-  }
- 
-  /* Unread badge */
-  #dh-chat-badge {
-    position: absolute;
-    top: -2px;
-    right: -2px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #c9a84c;
-    border: 2.5px solid #0d1f0f;
-    font-size: 9px;
-    font-weight: 700;
-    color: white;
-    font-family: sans-serif;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-  }
- 
-  /* When chat window is open — show X icon */
-  #dh-chat-fab-btn.open {
-    background: #c9a84c;
-  }
- 
-  #dh-chat-fab-btn.open::before {
-    display: none;
-  }
-
 /* chat icon */
   :root {
     --gold: #C9A84C;
@@ -2552,140 +2468,50 @@ embeddedmessagingconversationbutton,
 
 <!--chat icon-->
 
-<div id="dh-chat-fab" role="button" aria-label="Chat with Dream House" tabindex="0">
-  <div id="dh-chat-tooltip">Chat with us</div>
- 
-  <button id="dh-chat-fab-btn" aria-label="Open chat">
-    <!-- Chat icon (open state) -->
-    <svg id="dh-icon-chat" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M4 6C4 4.9 4.9 4 6 4H22C23.1 4 24 4.9 24 6V18C24 19.1 23.1 20 22 20H8L4 24V6Z" fill="white"/>
-      <circle cx="10" cy="13" r="1.7" fill="#1a3020"/>
-      <circle cx="14" cy="13" r="1.7" fill="#1a3020"/>
-      <circle cx="18" cy="13" r="1.7" fill="#1a3020"/>
-    </svg>
-    <!-- Close icon (shown when chat is open) -->
-    <svg id="dh-icon-close" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;">
-      <line x1="4" y1="4" x2="18" y2="18" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-      <line x1="18" y1="4" x2="4" y2="18" stroke="white" stroke-width="2.2" stroke-linecap="round"/>
-    </svg>
-    <span id="dh-chat-badge"></span>
-  </button>
-</div>
+<button id="dh-fab" aria-label="Chat with us">
+  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 6C4 4.9 4.9 4 6 4H22C23.1 4 24 4.9 24 6V18C24 19.1 23.1 20 22 20H8L4 24V6Z" fill="white"/>
+    <circle cx="10" cy="13" r="1.7" fill="#1a3020"/>
+    <circle cx="14" cy="13" r="1.7" fill="#1a3020"/>
+    <circle cx="18" cy="13" r="1.7" fill="#1a3020"/>
+  </svg>
+</button>
  
 <script>
-(function () {
-  var fab       = document.getElementById('dh-chat-fab');
-  var btn       = document.getElementById('dh-chat-fab-btn');
-  var tooltip   = document.getElementById('dh-chat-tooltip');
-  var iconChat  = document.getElementById('dh-icon-chat');
-  var iconClose = document.getElementById('dh-icon-close');
-  var isOpen    = false;
+  var fab = document.getElementById('dh-fab');
  
-  // ── Find the real Salesforce button (tries multiple selectors) ──
   function getSfButton() {
-    return (
-      document.querySelector('embeddedmessagingconversationbutton') ||
-      document.querySelector('embeddedMessagingConversationButton') ||
-      document.querySelector('[class*="embeddedMessaging"] button') ||
-      document.querySelector('button[embeddedmessaging]')
-    );
+    return document.querySelector('embeddedmessagingconversationbutton')
+        || document.querySelector('embeddedMessagingConversationButton');
   }
  
-  // ── Hide the SF button via JS (CSS can't always reach it) ──
-  function hideSfButton() {
+  function isSfButtonVisible() {
     var sfBtn = getSfButton();
-    if (sfBtn) {
-      sfBtn.style.setProperty('opacity', '0', 'important');
-      sfBtn.style.setProperty('pointer-events', 'none', 'important');
-      sfBtn.style.setProperty('visibility', 'hidden', 'important');
-    }
+    if (!sfBtn) return false;
+    var rect = sfBtn.getBoundingClientRect();
+    // SF button is visible if it has size and is on screen
+    return rect.width > 0 && rect.height > 0;
   }
  
-  // ── Check if the SF chat window is currently visible ──
-  function isChatWindowOpen() {
-    var win =
-      document.querySelector('embeddedmessagingconversationcontainer') ||
-      document.querySelector('embeddedMessagingConversationContainer') ||
-      document.querySelector('[class*="conversationContainer"]') ||
-      document.querySelector('[class*="ConversationContainer"]');
-    if (!win) return false;
-    var cs = getComputedStyle(win);
-    return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0';
-  }
+  fab.addEventListener('click', function () {
+    // 1. Hide our button
+    fab.style.display = 'none';
  
-  // ── Sync our FAB state to match SF chat window state ──
-  function syncState() {
-    var open = isChatWindowOpen();
-    if (open === isOpen) return;
-    isOpen = open;
-    btn.classList.toggle('open', isOpen);
-    iconChat.style.display  = isOpen ? 'none'  : 'block';
-    iconClose.style.display = isOpen ? 'block' : 'none';
- 
-    // Hide our FAB entirely when chat window is open
-    fab.style.display = isOpen ? 'none' : 'flex';
-  }
- 
-  // ── Show tooltip on hover ──
-  fab.addEventListener('mouseenter', function () {
-    if (!isOpen) tooltip.classList.add('visible');
-  });
-  fab.addEventListener('mouseleave', function () {
-    tooltip.classList.remove('visible');
-  });
- 
-  // ── Show tooltip once on first load ──
-  if (!sessionStorage.getItem('dh_tip_shown')) {
-    setTimeout(function () {
-      tooltip.classList.add('visible');
-      setTimeout(function () { tooltip.classList.remove('visible'); }, 3500);
-    }, 1200);
-    sessionStorage.setItem('dh_tip_shown', '1');
-  }
- 
-  // ── Click: trigger the real SF button ──
-  btn.addEventListener('click', function () {
+    // 2. Trigger Salesforce chat
     var sfBtn = getSfButton();
-    if (sfBtn) {
-      // Temporarily restore pointer-events so the click goes through
-      sfBtn.style.setProperty('pointer-events', 'auto', 'important');
-      sfBtn.style.setProperty('visibility', 'visible', 'important');
-      sfBtn.click();
-      // Re-hide after click
-      setTimeout(hideSfButton, 100);
-    }
-    tooltip.classList.remove('visible');
+    if (sfBtn) sfBtn.click();
+ 
+    // 3. Poll — when SF button reappears (user closed chat), show ours again
+    var poll = setInterval(function () {
+      if (isSfButtonVisible()) {
+        clearInterval(poll);
+        // Hide SF button again and show ours
+        var sfBtn = getSfButton();
+        if (sfBtn) sfBtn.style.display = 'none';
+        fab.style.display = 'flex';
+      }
+    }, 500);
   });
- 
-  // ── Keyboard accessible ──
-  fab.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter' || e.key === ' ') btn.click();
-  });
- 
-  // ── MutationObserver: watch for SF chat window appearing/disappearing ──
-  var observer = new MutationObserver(function () {
-    hideSfButton(); // keep SF button hidden whenever DOM changes
-    syncState();    // sync our FAB open/close state
-  });
- 
-  // Start observing once DOM is ready
-  function init() {
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class']
-    });
-    // Initial hide attempt (SF button may already be in DOM)
-    hideSfButton();
-  }
- 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
 </script>
 
 <!--chat icon-->
