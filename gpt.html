@@ -9,12 +9,11 @@
 <style>
 
   /* chat icon */
-embeddedMessagingConversationButton,
-  .embeddedMessagingConversationButton,
-  [class*="embeddedMessaging"] button[class*="conversation"],
-  [class*="embeddedMessaging"] button[class*="Conversation"] {
+embeddedmessagingconversationbutton,
+  .embeddedMessagingConversationButton {
     opacity: 0 !important;
     pointer-events: none !important;
+    visibility: hidden !important;
   }
  
   /* Our custom floating button */
@@ -2582,7 +2581,52 @@ embeddedMessagingConversationButton,
   var iconClose = document.getElementById('dh-icon-close');
   var isOpen    = false;
  
-  // Show tooltip on hover
+  // ── Find the real Salesforce button (tries multiple selectors) ──
+  function getSfButton() {
+    return (
+      document.querySelector('embeddedmessagingconversationbutton') ||
+      document.querySelector('embeddedMessagingConversationButton') ||
+      document.querySelector('[class*="embeddedMessaging"] button') ||
+      document.querySelector('button[embeddedmessaging]')
+    );
+  }
+ 
+  // ── Hide the SF button via JS (CSS can't always reach it) ──
+  function hideSfButton() {
+    var sfBtn = getSfButton();
+    if (sfBtn) {
+      sfBtn.style.setProperty('opacity', '0', 'important');
+      sfBtn.style.setProperty('pointer-events', 'none', 'important');
+      sfBtn.style.setProperty('visibility', 'hidden', 'important');
+    }
+  }
+ 
+  // ── Check if the SF chat window is currently visible ──
+  function isChatWindowOpen() {
+    var win =
+      document.querySelector('embeddedmessagingconversationcontainer') ||
+      document.querySelector('embeddedMessagingConversationContainer') ||
+      document.querySelector('[class*="conversationContainer"]') ||
+      document.querySelector('[class*="ConversationContainer"]');
+    if (!win) return false;
+    var cs = getComputedStyle(win);
+    return cs.display !== 'none' && cs.visibility !== 'hidden' && cs.opacity !== '0';
+  }
+ 
+  // ── Sync our FAB state to match SF chat window state ──
+  function syncState() {
+    var open = isChatWindowOpen();
+    if (open === isOpen) return;
+    isOpen = open;
+    btn.classList.toggle('open', isOpen);
+    iconChat.style.display  = isOpen ? 'none'  : 'block';
+    iconClose.style.display = isOpen ? 'block' : 'none';
+ 
+    // Hide our FAB entirely when chat window is open
+    fab.style.display = isOpen ? 'none' : 'flex';
+  }
+ 
+  // ── Show tooltip on hover ──
   fab.addEventListener('mouseenter', function () {
     if (!isOpen) tooltip.classList.add('visible');
   });
@@ -2590,7 +2634,7 @@ embeddedMessagingConversationButton,
     tooltip.classList.remove('visible');
   });
  
-  // Show tooltip once on first load (auto-dismiss after 3.5s)
+  // ── Show tooltip once on first load ──
   if (!sessionStorage.getItem('dh_tip_shown')) {
     setTimeout(function () {
       tooltip.classList.add('visible');
@@ -2599,53 +2643,48 @@ embeddedMessagingConversationButton,
     sessionStorage.setItem('dh_tip_shown', '1');
   }
  
-  // Click handler — find and click the real Salesforce button
+  // ── Click: trigger the real SF button ──
   btn.addEventListener('click', function () {
-    // Try all known Salesforce button selectors
-    var sfBtn =
-      document.querySelector('embeddedMessagingConversationButton button') ||
-      document.querySelector('.embeddedMessagingConversationButton') ||
-      document.querySelector('button[class*="conversationButton"]') ||
-      document.querySelector('[data-key="conversationButton"]') ||
-      document.querySelector('embeddedMessaging button');
- 
+    var sfBtn = getSfButton();
     if (sfBtn) {
+      // Temporarily restore pointer-events so the click goes through
+      sfBtn.style.setProperty('pointer-events', 'auto', 'important');
+      sfBtn.style.setProperty('visibility', 'visible', 'important');
       sfBtn.click();
+      // Re-hide after click
+      setTimeout(hideSfButton, 100);
     }
- 
-    // Toggle open/close visual state
-    isOpen = !isOpen;
-    btn.classList.toggle('open', isOpen);
-    iconChat.style.display  = isOpen ? 'none'  : 'block';
-    iconClose.style.display = isOpen ? 'block' : 'none';
     tooltip.classList.remove('visible');
   });
  
-  // Keyboard accessible
+  // ── Keyboard accessible ──
   fab.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') btn.click();
   });
  
-  // Sync close state if user closes chat via Salesforce's own X button
+  // ── MutationObserver: watch for SF chat window appearing/disappearing ──
   var observer = new MutationObserver(function () {
-    var chatWindow =
-      document.querySelector('embeddedMessagingConversationContainer') ||
-      document.querySelector('[class*="conversationContainer"]') ||
-      document.querySelector('[class*="ConversationContainer"]');
- 
-    var visible = chatWindow &&
-      getComputedStyle(chatWindow).display !== 'none' &&
-      getComputedStyle(chatWindow).visibility !== 'hidden';
- 
-    if (isOpen && !visible) {
-      isOpen = false;
-      btn.classList.remove('open');
-      iconChat.style.display  = 'block';
-      iconClose.style.display = 'none';
-    }
+    hideSfButton(); // keep SF button hidden whenever DOM changes
+    syncState();    // sync our FAB open/close state
   });
  
-  observer.observe(document.body, { childList: true, subtree: true, attributes: true });
+  // Start observing once DOM is ready
+  function init() {
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['style', 'class']
+    });
+    // Initial hide attempt (SF button may already be in DOM)
+    hideSfButton();
+  }
+ 
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 })();
 </script>
 
