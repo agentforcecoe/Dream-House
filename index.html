@@ -433,6 +433,127 @@
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
 
+  /* ── HAMBURGER ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column; justify-content: center; align-items: center;
+    gap: 5px; background: none; border: none; cursor: pointer;
+    width: 40px; height: 40px; padding: 4px; z-index: 200;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--gold-light);
+    transition: transform .3s, opacity .3s, width .3s;
+    transform-origin: center;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; width: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    /* Nav */
+    nav { padding: 0 20px; }
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      position: fixed; top: 72px; left: 0; right: 0;
+      background: rgba(14,27,20,0.98);
+      backdrop-filter: blur(12px);
+      flex-direction: column; align-items: stretch;
+      gap: 0; padding: 0;
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-links.open { max-height: 400px; padding: 12px 0 20px; }
+    .nav-links li { width: 100%; }
+    .nav-links a {
+      display: block; padding: 14px 28px;
+      font-size: 13px; border-bottom: 1px solid rgba(201,168,76,0.07);
+    }
+    .nav-links li:last-child a { border-bottom: none; }
+    .nav-cta { margin: 12px 28px 0 !important; padding: 12px 22px !important; text-align: center; }
+
+    /* Hero */
+    .hero-content { padding: 0 24px; max-width: 100%; }
+    .hero h1 { font-size: clamp(36px, 9vw, 56px); }
+    .hero p { font-size: 14px; }
+    .hero-actions { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .hero-stats {
+      position: static;
+      display: flex; flex-wrap: wrap; gap: 24px;
+      padding: 0 24px; justify-content: flex-start;
+      margin-top: 32px;
+    }
+    .stat { text-align: left; }
+    .scroll-hint { display: none; }
+
+    /* Sections */
+    section { padding: 60px 24px; }
+
+    /* Features strip */
+    .features-strip {
+      grid-template-columns: 1fr 1fr;
+      padding: 40px 24px;
+    }
+    .feature-item {
+      padding: 28px 20px;
+      border-right: none;
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+    .feature-item:nth-child(odd) { border-right: 1px solid rgba(201,168,76,0.12); }
+    .feature-item:nth-last-child(-n+2) { border-bottom: none; }
+
+    /* Featured properties */
+    .featured-header { flex-direction: column; align-items: flex-start; gap: 20px; margin-bottom: 36px; }
+    .props-grid { grid-template-columns: 1fr; gap: 20px; }
+
+    /* Why section */
+    .why-section { grid-template-columns: 1fr; gap: 40px; }
+    .why-img { height: 320px; }
+    .why-img-accent { width: 140px; height: 140px; bottom: -16px; right: -16px; }
+
+    /* Locations */
+    .locations-grid { grid-template-columns: 1fr 1fr; }
+
+    /* CTA Banner */
+    .cta-banner { flex-direction: column; gap: 28px; padding: 60px 24px; text-align: center; }
+    .cta-banner h2 { font-size: clamp(28px, 6vw, 40px); max-width: 100%; }
+
+    /* Footer */
+    footer { padding: 50px 24px 28px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .footer-brand { grid-column: 1 / -1; }
+    .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+  }
+
+  @media (max-width: 540px) {
+    /* Nav */
+    .logo-text span:last-child { display: none; }
+
+    /* Hero */
+    .hero { min-height: 100svh; align-items: flex-end; padding-bottom: 48px; }
+    .hero-content { padding: 80px 20px 0; }
+    .hero h1 { font-size: clamp(32px, 10vw, 48px); }
+    .hero-stats { padding: 0 20px; gap: 20px; }
+    .stat-num { font-size: 28px; }
+
+    /* Features strip */
+    .features-strip { grid-template-columns: 1fr; padding: 32px 20px; }
+    .feature-item { border-right: none !important; border-bottom: 1px solid rgba(201,168,76,0.12); }
+    .feature-item:last-child { border-bottom: none; }
+
+    /* Sections */
+    section { padding: 50px 20px; }
+
+    /* Locations */
+    .locations-grid { grid-template-columns: 1fr; }
+
+    /* Footer */
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-brand { grid-column: auto; }
+  }
+
 </style>
 </head>
 <body>
@@ -453,13 +574,16 @@
       <span>Premium Real Estate</span>
     </div>
   </a>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="index.html">Home</a></li>
     <li><a href="gpt.html">Properties</a></li>
     <li><a href="#">About</a></li>
     <li><a href="#">Locations</a></li>
     <li><a href="#" class="nav-cta">Contact Us</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -725,7 +849,7 @@
       <h4>Contact</h4>
       <ul>
         <li><a href="#">+63 2 8888 0000</a></li>
-        <li><a href="#">info@dreamhouse.ph</a></li>
+        <li><a href="#"><span class="__cf_email__" data-cfemail="0e676068614e6a7c6b6f6366617b7d6b207e66">[email&#160;protected]</span></a></li>
         <li><a href="#">6F Ayala Tower, Makati</a></li>
       </ul>
     </div>
@@ -743,7 +867,7 @@
 
 <!--chat icon-->
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Intersection Observer for fade-up
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
@@ -753,6 +877,23 @@
   // Duplicate marquee for seamless loop
   const mq = document.getElementById('mq');
   mq.parentElement.appendChild(mq.cloneNode(true));
+
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('navHamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    const isOpen = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen);
+  });
+  // Close on link click
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', false);
+    });
+  });
 </script>
 
 
@@ -842,8 +983,4 @@
 		}
 	};
 </script>
-<script type='text/javascript' src='https://ap1763032291393.my.site.com/ESWDreamHouseWebsite1774503133873/assets/js/bootstrap.min.js' onload='initEmbeddedMessaging()'></script>
-
-<!--Dream House Agent-->
-</body>
-</html>
+<script type='text/jav
