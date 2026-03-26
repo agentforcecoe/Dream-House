@@ -9,47 +9,7 @@
 <style>
 
   /* chat icon */
-@keyframes dh-pulse {
-    0%   { transform: scale(1);    opacity: 0.6; }
-    70%  { transform: scale(1.5);  opacity: 0;   }
-    100% { transform: scale(1.5);  opacity: 0;   }
-  }
- 
-  #dh-fab {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    z-index: 999999;
-    width: 62px;
-    height: 62px;
-    border-radius: 50%;
-    background: #c9a84c;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.18s ease, background 0.18s ease;
-  }
- 
-  #dh-fab:hover {
-    transform: scale(1.08);
-    background: #b8943a;
-  }
- 
-  #dh-fab:active {
-    transform: scale(0.95);
-  }
- 
-  #dh-fab::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: #c9a84c;
-    animation: dh-pulse 2.4s ease-out infinite;
-    z-index: -1;
-  }
+
 /* chat icon */
   :root {
     --gold: #C9A84C;
@@ -2468,51 +2428,6 @@
 
 <!--chat icon-->
 
-<button id="dh-fab" aria-label="Chat with us">
-  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 6C4 4.9 4.9 4 6 4H22C23.1 4 24 4.9 24 6V18C24 19.1 23.1 20 22 20H8L4 24V6Z" fill="white"/>
-    <circle cx="10" cy="13" r="1.7" fill="#1a3020"/>
-    <circle cx="14" cy="13" r="1.7" fill="#1a3020"/>
-    <circle cx="18" cy="13" r="1.7" fill="#1a3020"/>
-  </svg>
-</button>
- 
-<script>
-  var fab = document.getElementById('dh-fab');
- 
-  function getSfButton() {
-    return document.querySelector('embeddedmessagingconversationbutton')
-        || document.querySelector('embeddedMessagingConversationButton');
-  }
- 
-  function isSfButtonVisible() {
-    var sfBtn = getSfButton();
-    if (!sfBtn) return false;
-    var rect = sfBtn.getBoundingClientRect();
-    // SF button is visible if it has size and is on screen
-    return rect.width > 0 && rect.height > 0;
-  }
- 
-  fab.addEventListener('click', function () {
-    // 1. Hide our button
-    fab.style.display = 'none';
- 
-    // 2. Trigger Salesforce chat
-    var sfBtn = getSfButton();
-    if (sfBtn) sfBtn.click();
- 
-    // 3. Poll — when SF button reappears (user closed chat), show ours again
-    var poll = setInterval(function () {
-      if (isSfButtonVisible()) {
-        clearInterval(poll);
-        // Hide SF button again and show ours
-        var sfBtn = getSfButton();
-        if (sfBtn) sfBtn.style.display = 'none';
-        fab.style.display = 'flex';
-      }
-    }, 500);
-  });
-</script>
 
 <!--chat icon-->
 
