@@ -7,6 +7,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+
+
+
   :root {
     --gold: #C9A84C;
     --gold-light: #E8D09A;
@@ -427,6 +430,132 @@
   /* ── ANIMATIONS ── */
   .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
   .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+
+/* chat Icon  */
+.embeddedMessagingConversationButton {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 64px !important;
+    height: 64px !important;
+    border-radius: 50% !important;
+    position: relative !important;
+    overflow: visible !important;
+    transition: transform 0.18s ease !important;
+  }
+ 
+  .embeddedMessagingConversationButton:hover {
+    transform: scale(1.08) !important;
+  }
+ 
+  /* ── Hide the default SVG icon and any label text ── */
+  .embeddedMessagingConversationButton svg,
+  .embeddedMessagingConversationButton .embeddedMessagingIconContainer {
+    display: none !important;
+  }
+ 
+  /* ── Our custom icon — navy circle with chat bubble ── */
+  .embeddedMessagingConversationButton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-color: #1B2A4A;
+    z-index: 0;
+  }
+ 
+  /* ── Chat bubble SVG injected as mask-image ── */
+  .embeddedMessagingConversationButton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background-color: #ffffff;
+    z-index: 1;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 6C4 4.9 4.9 4 6 4H22C23.1 4 24 4.9 24 6V18C24 19.1 23.1 20 22 20H8L4 24V6Z'/%3E%3Ccircle cx='10' cy='13' r='1.6' fill='%231B2A4A'/%3E%3Ccircle cx='14' cy='13' r='1.6' fill='%231B2A4A'/%3E%3Ccircle cx='18' cy='13' r='1.6' fill='%231B2A4A'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Cpath d='M4 6C4.9 4 4.9 4 6 4H22C23.1 4 24 4.9 24 6V18C24 19.1 23.1 20 22 20H8L4 24V6Z'/%3E%3Ccircle cx='10' cy='13' r='1.6'/%3E%3Ccircle cx='14' cy='13' r='1.6'/%3E%3Ccircle cx='18' cy='13' r='1.6'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-size: 52%;
+    mask-size: 52%;
+  }
+ 
+  /* ── Pulse ring animation ── */
+  @keyframes dh-pulse {
+    0%   { transform: scale(1);    opacity: 0.55; }
+    70%  { transform: scale(1.42); opacity: 0;    }
+    100% { transform: scale(1.42); opacity: 0;    }
+  }
+ 
+  .embeddedMessagingConversationButton .dh-pulse-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: #B8832A;
+    animation: dh-pulse 2.4s ease-out infinite;
+    z-index: -1;
+    pointer-events: none;
+  }
+ 
+  /* ── Gold notification badge (shown when unread messages exist) ── */
+  .embeddedMessagingConversationButton .embeddedMessagingUnreadCount {
+    background: #C08A3A !important;
+    color: #fff !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    min-width: 18px !important;
+    height: 18px !important;
+    border-radius: 9px !important;
+    border: 2px solid #fff !important;
+    top: -2px !important;
+    right: -2px !important;
+  }
+ 
+  /* ── Tooltip label on first load ── */
+  .dh-chat-tooltip {
+    position: absolute;
+    right: 72px;
+    bottom: 50%;
+    transform: translateY(50%);
+    background: #1B2A4A;
+    color: #F5EDD8;
+    font-size: 13px;
+    font-family: sans-serif;
+    padding: 8px 14px;
+    border-radius: 22px;
+    white-space: nowrap;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: dh-tooltip-in 0.4s ease forwards, dh-tooltip-out 0.4s ease 3.5s forwards;
+  }
+ 
+  .dh-chat-tooltip::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C08A3A;
+    flex-shrink: 0;
+  }
+ 
+  @keyframes dh-tooltip-in {
+    from { opacity: 0; transform: translateY(50%) translateX(8px); }
+    to   { opacity: 1; transform: translateY(50%) translateX(0); }
+  }
+ 
+  @keyframes dh-tooltip-out {
+    from { opacity: 1; }
+    to   { opacity: 0; pointer-events: none; }
+  }
+
+
+/* chat Icon  */
 </style>
 </head>
 <body>
@@ -741,5 +870,76 @@
   const mq = document.getElementById('mq');
   mq.parentElement.appendChild(mq.cloneNode(true));
 </script>
+
+
+<!--Dream House Agent-->
+<script type='text/javascript'>
+  function initEmbeddedMessaging() {
+    try {
+      embeddedservice_bootstrap.settings.language = 'en_US';
+      embeddedservice_bootstrap.init(
+        '00DKa00000Uxd6c',
+        'Dream_House_Website',
+        'https://ap1763032291393.my.site.com/ESWDreamHouseWebsite1774503133873',
+        {
+          scrt2URL: 'https://ap1763032291393.my.salesforce-scrt.com'
+        }
+      );
+    } catch (err) {
+      console.error('Error loading Embedded Messaging: ', err);
+    }
+  };
+</script>
+<script
+  type='text/javascript'
+  src='https://ap1763032291393.my.site.com/ESWDreamHouseWebsite1774503133873/assets/js/bootstrap.min.js'
+  onload='initEmbeddedMessaging()'>
+</script>
+ 
+ 
+<!-- ✅ STEP 3: Inject pulse ring + tooltip after Salesforce renders the button -->
+<script>
+  (function () {
+    // Wait for Salesforce to render its button, then enhance it
+    var attempts = 0;
+    var maxAttempts = 40;
+ 
+    function enhanceButton() {
+      var btn = document.querySelector('.embeddedMessagingConversationButton');
+      if (!btn) {
+        if (++attempts < maxAttempts) setTimeout(enhanceButton, 500);
+        return;
+      }
+ 
+      // Inject pulse ring inside the button
+      if (!btn.querySelector('.dh-pulse-ring')) {
+        var ring = document.createElement('span');
+        ring.className = 'dh-pulse-ring';
+        btn.appendChild(ring);
+      }
+ 
+      // Show "Chat with us" tooltip on first visit
+      var tooltipShown = sessionStorage.getItem('dh_tooltip_shown');
+      if (!tooltipShown) {
+        var container = btn.parentElement || btn;
+        var tip = document.createElement('div');
+        tip.className = 'dh-chat-tooltip';
+        tip.textContent = 'Chat with us';
+        container.style.position = 'relative';
+        container.appendChild(tip);
+        setTimeout(function () { tip.remove(); }, 4200);
+        sessionStorage.setItem('dh_tooltip_shown', '1');
+      }
+    }
+ 
+    // Start watching after DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enhanceButton);
+    } else {
+      enhanceButton();
+    }
+  })();
+</script>
+<!--Dream House Agent-->
 </body>
 </html>
