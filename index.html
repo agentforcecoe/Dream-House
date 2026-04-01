@@ -137,12 +137,12 @@
   /* Hero content */
   .hero-content {
     position: relative; z-index: 3;
-    padding: 72px 120px 72px 72px; /* top: nav height | right: clear thumbs | bottom | left */
+    padding: 96px 120px 60px 72px;
     width: 100%;
-    height: 100%;
-    display: flex; align-items: flex-end; justify-content: space-between;
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: space-between;
     gap: 40px;
-    padding-bottom: 100px;
+    box-sizing: border-box;
   }
   .hero-left { max-width: 620px; flex: 1; }
 
@@ -706,7 +706,7 @@
 
     /* Hero Carousel */
     .hero { align-items: flex-end; min-height: 100svh; }
-    .hero-content { padding: 80px 24px 110px 24px; flex-direction: column; align-items: flex-start; gap: 0; height: auto; min-height: 100svh; }
+    .hero-content { padding: 96px 24px 110px 24px; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 0; min-height: 100svh; }
     .hero-left { max-width: 100%; }
     .hero-right { display: none; }
     .hero h1 { font-size: clamp(36px, 8vw, 58px); }
@@ -791,7 +791,7 @@
 
     /* Hero */
     .hero { min-height: 100svh; }
-    .hero-content { padding: 80px 20px 110px; }
+    .hero-content { padding: 96px 20px 110px; }
     .hero h1 { font-size: clamp(32px, 10vw, 48px); }
     .hero-property-name { font-size: clamp(24px, 8vw, 38px); }
     .hero p { max-width: 100%; font-size: 15px; }
@@ -815,6 +815,46 @@
     /* Footer */
     .footer-top { grid-template-columns: 1fr; }
     .footer-brand { grid-column: auto; }
+  }
+
+  /* ── LAPTOP / MEDIUM SCREENS (901px – 1280px) ── */
+  @media (min-width: 901px) and (max-width: 1280px) {
+    /* Nav */
+    nav { padding: 0 40px; }
+    .nav-links { gap: 20px; }
+
+    /* Hero */
+    .hero-content { padding: 96px 96px 60px 48px; }
+    .hero-left { max-width: 500px; }
+
+    /* Slightly smaller stat numbers so right panel fits */
+    .stat-num { font-size: 26px; }
+    .hero-stats { gap: 12px; }
+
+    /* Thumbnail strip: narrower on laptops */
+    .carousel-thumbs { padding: 10px 8px; }
+    .carousel-thumb { width: 54px; height: 40px; }
+
+    /* Scroll hint */
+    .scroll-hint { left: 40px; bottom: 32px; }
+
+    /* Sections */
+    section { padding: 90px 48px; }
+    .features-strip { padding: 72px 48px; }
+    .cta-banner { padding: 80px 48px; }
+    footer { padding: 70px 48px 36px; }
+  }
+
+  /* ── LARGE LAPTOP / SMALL DESKTOP (1281px – 1440px) ── */
+  @media (min-width: 1281px) and (max-width: 1440px) {
+    nav { padding: 0 48px; }
+    .hero-content { padding: 96px 110px 60px 60px; }
+    .hero-left { max-width: 560px; }
+
+    section { padding: 100px 60px; }
+    .features-strip { padding: 80px 60px; }
+    .cta-banner { padding: 90px 60px; }
+    footer { padding: 76px 60px 38px; }
   }
 
 </style>
